@@ -1,7 +1,7 @@
 import { it, beforeEach, describe, mock } from 'node:test'
 import assert from 'node:assert/strict'
 
-import { id, pipe } from '../utils.mjs'
+import { pipe } from '../utils.mjs'
 import { Maybe } from '../maybe.mjs'
 import { Either } from '../either.mjs'
 import { Task } from '../task.mjs'
@@ -9,12 +9,12 @@ import { Task } from '../task.mjs'
 describe.skip('Task type class', () => {
 	describe('creation functions create, of, rejected, fromTry, fromLazyPromise, fromEither, fromMaybe', () => {
 		it('should be able to create with "create" and resolves', (_, done) =>
-			Task.create((rej, res) => res('good')).fork(done, n => {
+			Task.create((_, res) => res('good')).fork(done, n => {
 				assert.equal(n, 'good')
 				done()
 			}))
 		it('should be able to create with "create" and rejects', (_, done) =>
-			Task.create((rej, res) => rej('bad')).fork(err => {
+			Task.create(rej => rej('bad')).fork(err => {
 				assert.equal(err, 'bad')
 				done()
 			}, done))
@@ -149,7 +149,7 @@ describe.skip('Task type class', () => {
 				done()
 			}))
 		it('should validate non curried version with resolution and chains with failure', (_, done) => {
-			const spyChainerRejects = mock.fn(str => Task.rejected('bad'))
+			const spyChainerRejects = mock.fn(() => Task.rejected('bad'))
 			return pipe(Task.of('good'), Task.chain(spyChainerRejects)).fork(err => {
 				assert.equal('bad', err)
 				assert.equal(spyChainerRejects.mock.callCount(), 1)
@@ -177,7 +177,7 @@ describe.skip('Task type class', () => {
 				done()
 			}))
 		it('should validate non curried version with resolution and chains with failure', (_, done) => {
-			const spyFnResolves = mock.fn(str => Task.of('good'))
+			const spyFnResolves = mock.fn(() => Task.of('good'))
 			return pipe(Task.rejected('bad'), Task.orElse(spyFnResolves)).fork(done, s => {
 				assert.equal('good', s)
 				assert.equal(spyFnResolves.mock.callCount(), 1)
