@@ -1,6 +1,6 @@
-import { Maybe } from './maybe'
-import { Either } from './either'
-import { Task } from './task'
+import { Maybe } from './maybe.js'
+import { Either } from './either.js'
+import { Task } from './task.js'
 
 declare function of<T>(...args: T[]): T[]
 
@@ -58,11 +58,11 @@ declare function concat<T>(arrA: T[], arrB: T[]): T[]
 declare function concat<T>(arrB: T[]): (arrA: T[]) => T[]
 
 declare function groupBy<A extends object, B extends keyof A>(
-  arr: A[],
-  groupFn: (item: A) => A[B],
+	arr: A[],
+	groupFn: (item: A) => A[B],
 ): Partial<Record<PropertyKey, readonly [A, ...A[]]>>
 declare function groupBy<A extends object, B extends keyof A>(
-  groupFn: (item: A) => A[B],
+	groupFn: (item: A) => A[B],
 ): (arr: A[]) => Partial<Record<PropertyKey, readonly [A, ...A[]]>>
 
 declare function forEach<A, B>(arr: A[], fn: (value: A) => void): void
@@ -109,46 +109,46 @@ declare function traverseTaskM<E, S, T>(f: (item: S) => Task<E, T>): (arr: S[]) 
 
 // @ts-ignore
 declare const Arr = {
-  of,
-  make,
-  makeWithIndex,
-  isEmpty,
-  size,
-  head,
-  headOrNull,
-  tail,
-  all,
-  any,
-  some,
-  find,
-  findOrNull,
-  at,
-  atOrNull,
-  removeAt,
-  take,
-  reverse,
-  cons,
-  snoc,
-  concat,
-  groupBy,
-  forEach,
-  forEachIndexed,
-  map,
-  mapIndexed,
-  filter,
-  filterIndexed,
-  chain,
-  chainIndexed,
-  fold,
-  foldIndexed,
-  sequenceMaybe,
-  sequenceEither,
-  sequenceTask,
-  traverseMaybe,
-  traverseEither,
-  traverseTaskA,
-  traverseTaskM,
-  ap,
+	of,
+	make,
+	makeWithIndex,
+	isEmpty,
+	size,
+	head,
+	headOrNull,
+	tail,
+	all,
+	any,
+	some,
+	find,
+	findOrNull,
+	at,
+	atOrNull,
+	removeAt,
+	take,
+	reverse,
+	cons,
+	snoc,
+	concat,
+	groupBy,
+	forEach,
+	forEachIndexed,
+	map,
+	mapIndexed,
+	filter,
+	filterIndexed,
+	chain,
+	chainIndexed,
+	fold,
+	foldIndexed,
+	sequenceMaybe,
+	sequenceEither,
+	sequenceTask,
+	traverseMaybe,
+	traverseEither,
+	traverseTaskA,
+	traverseTaskM,
+	ap,
 }
 
 export { Arr }

@@ -1,7 +1,9 @@
 import { Maybe } from './maybe.js'
 import { Either } from './either.js'
 
-declare type Task<E, S> = { fork: (rej: (e: E) => void, res: (r: S) => void) => void }
+declare type Task<E, S> = {
+	fork: (rej: (e: E) => void, res: (r: S) => void) => void
+}
 
 declare function create<E, S>(fork: (rej: (e: E) => void, res: (t: S) => void) => void): Task<E, S>
 declare function of<E, S>(value: S): Task<E, S>
@@ -43,23 +45,23 @@ declare function toPromise<E, S>(t: Task<E, S>): Promise<S>
 
 // @ts-ignore
 declare const Task = {
-  create,
-  of,
-  rejected,
-  fromTry,
-  fromEither,
-  fromLazyPromise,
-  fromMaybe,
-  flip,
-  map,
-  rejectMap,
-  chain,
-  orElse,
-  tap,
-  rejectTap,
-  ap,
-  fold,
-  toPromise,
+	create,
+	of,
+	rejected,
+	fromTry,
+	fromEither,
+	fromLazyPromise,
+	fromMaybe,
+	flip,
+	map,
+	rejectMap,
+	chain,
+	orElse,
+	tap,
+	rejectTap,
+	ap,
+	fold,
+	toPromise,
 }
 
 export { Task }
