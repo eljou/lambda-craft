@@ -1,7 +1,7 @@
 import { it, beforeEach, describe, mock } from 'node:test'
 import assert from 'node:assert/strict'
 
-import { id, pipe } from '../utils.mjs'
+import { idFn, pipe } from '../utils.mjs'
 import { Maybe } from '../maybe.mjs'
 import { Either } from '../either.mjs'
 
@@ -10,19 +10,19 @@ describe('Either type class', () => {
 		it('should be able to create with "of"', () => {
 			const e = Either.of(1)
 			assert.ok(Either.isRight(e))
-			assert.equal(Either.match(e, id, id), 1)
+			assert.equal(Either.match(e, idFn, idFn), 1)
 		})
 
 		it('should be able to create with "right"', () => {
 			const e = Either.right(1)
 			assert.ok(Either.isRight(e))
-			assert.equal(Either.match(e, id, id), 1)
+			assert.equal(Either.match(e, idFn, idFn), 1)
 		})
 
 		it('should be able to create with "left"', () => {
 			const e = Either.left('bad')
 			assert.ok(Either.isLeft(e))
-			assert.equal(Either.match(e, id, id), 'bad')
+			assert.equal(Either.match(e, idFn, idFn), 'bad')
 		})
 	})
 
@@ -30,7 +30,7 @@ describe('Either type class', () => {
 		it('should get a right when provided function returns a value', () => {
 			const e = Either.fromTry(() => 1)
 			assert.ok(Either.isRight(e))
-			assert.equal(Either.match(e, id, id), 1)
+			assert.equal(Either.match(e, idFn, idFn), 1)
 		})
 
 		it('should get a left when provided function throws', () => {
@@ -38,7 +38,7 @@ describe('Either type class', () => {
 				throw 'bad'
 			})
 			assert.ok(Either.isLeft(e))
-			assert.equal(Either.match(e, id, id), 'bad')
+			assert.equal(Either.match(e, idFn, idFn), 'bad')
 		})
 	})
 
@@ -47,14 +47,14 @@ describe('Either type class', () => {
 			const right = pipe(Either.left('err'), Either.flip)
 
 			assert.ok(Either.isRight(right))
-			assert.equal('err', Either.match(right, id, id))
+			assert.equal('err', Either.match(right, idFn, idFn))
 		})
 
 		it('sould flip value from right to left', () => {
 			const left = pipe(Either.right('good'), Either.flip)
 
 			assert.ok(Either.isLeft(left))
-			assert.equal('good', Either.match(left, id, id))
+			assert.equal('good', Either.match(left, idFn, idFn))
 		})
 	})
 
@@ -65,13 +65,13 @@ describe('Either type class', () => {
 		})
 
 		it('should validate non curried version with left value', () => {
-			const result = pipe(Either.left('bad'), e => Either.map(e, spyMapper), Either.match(id, id))
+			const result = pipe(Either.left('bad'), e => Either.map(e, spyMapper), Either.match(idFn, idFn))
 			assert.equal('bad', result)
 			assert.equal(spyMapper.mock.callCount(), 0)
 		})
 
 		it('should validate curried version with right value', () => {
-			const result = pipe(Either.of('a'), Either.map(spyMapper), Either.match(id, id))
+			const result = pipe(Either.of('a'), Either.map(spyMapper), Either.match(idFn, idFn))
 			assert.equal(1, result)
 			assert.equal(spyMapper.mock.callCount(), 1)
 		})
@@ -84,13 +84,13 @@ describe('Either type class', () => {
 		})
 
 		it('should validate non curried version with left value', () => {
-			const result = pipe(Either.left('bad'), e => Either.leftMap(e, spyMapper), Either.match(id, id))
+			const result = pipe(Either.left('bad'), e => Either.leftMap(e, spyMapper), Either.match(idFn, idFn))
 			assert.equal(3, result)
 			assert.equal(spyMapper.mock.callCount(), 1)
 		})
 
 		it('should validate curried version with right value', () => {
-			const result = pipe(Either.of('a'), Either.leftMap(spyMapper), Either.match(id, id))
+			const result = pipe(Either.of('a'), Either.leftMap(spyMapper), Either.match(idFn, idFn))
 			assert.equal('a', result)
 			assert.equal(spyMapper.mock.callCount(), 0)
 		})
@@ -103,13 +103,13 @@ describe('Either type class', () => {
 		})
 
 		it('should validate non curried version with left value', () => {
-			const result = pipe(Either.left('bad'), e => Either.chain(e, spyChainer), Either.match(id, id))
+			const result = pipe(Either.left('bad'), e => Either.chain(e, spyChainer), Either.match(idFn, idFn))
 			assert.equal('bad', result)
 			assert.equal(spyChainer.mock.callCount(), 0)
 		})
 
 		it('should validate curried version with right value', () => {
-			const result = pipe(Either.of('a'), Either.chain(spyChainer), Either.match(id, id))
+			const result = pipe(Either.of('a'), Either.chain(spyChainer), Either.match(idFn, idFn))
 			assert.equal(1, result)
 			assert.equal(spyChainer.mock.callCount(), 1)
 		})
@@ -122,13 +122,13 @@ describe('Either type class', () => {
 		})
 
 		it('should validate non curried version with left value', () => {
-			const result = pipe(Either.left('bad'), e => Either.orElse(e, spyOrElse), Either.match(id, id))
+			const result = pipe(Either.left('bad'), e => Either.orElse(e, spyOrElse), Either.match(idFn, idFn))
 			assert.equal(3, result)
 			assert.equal(spyOrElse.mock.callCount(), 1)
 		})
 
 		it('should validate curried version with right value', () => {
-			const result = pipe(Either.of('a'), Either.orElse(spyOrElse), Either.match(id, id))
+			const result = pipe(Either.of('a'), Either.orElse(spyOrElse), Either.match(idFn, idFn))
 			assert.equal('a', result)
 			assert.equal(spyOrElse.mock.callCount(), 0)
 		})
@@ -137,7 +137,7 @@ describe('Either type class', () => {
 			const result = pipe(
 				Either.left('bad'),
 				Either.orElse(() => Either.right('good')),
-				Either.match(id, id),
+				Either.match(idFn, idFn),
 			)
 			assert.equal('good', result)
 		})
@@ -162,7 +162,7 @@ describe('Either type class', () => {
 			const result = pipe(eitherFn, Either.ap(Either.right('a')))
 
 			assert.ok(Either.isRight(result))
-			assert.equal('hello a', Either.match(result, id, id))
+			assert.equal('hello a', Either.match(result, idFn, idFn))
 			assert.equal(spyApFn.mock.callCount(), 1)
 		})
 	})

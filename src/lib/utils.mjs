@@ -2,8 +2,12 @@ function pipe(x, ...fns) {
 	return fns.reduce((acc, fn) => fn(acc), x)
 }
 
-function id(value) {
+function flow(...fns) {
+	return arg => pipe(arg, ...fns)
+}
+
+function idFn(value) {
 	return value
 }
 
-export { pipe, id }
+export { pipe, flow, idFn }

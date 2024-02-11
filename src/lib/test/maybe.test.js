@@ -1,7 +1,7 @@
 import { it, beforeEach, describe, mock } from 'node:test'
 import assert from 'node:assert/strict'
 
-import { id, pipe } from '../utils.mjs'
+import { idFn, pipe } from '../utils.mjs'
 import { Maybe } from '../maybe.mjs'
 import { Either } from '../either.mjs'
 
@@ -96,7 +96,7 @@ describe('Maybe type class', () => {
 	describe('match', () => {
 		it('should validate non curried with nothing version', () => {
 			assert.equal(
-				pipe(Maybe.nothing(), mb => Maybe.match(mb, id, () => 'none')),
+				pipe(Maybe.nothing(), mb => Maybe.match(mb, idFn, () => 'none')),
 				'none',
 			)
 		})
@@ -106,7 +106,7 @@ describe('Maybe type class', () => {
 			assert.equal(
 				pipe(
 					Maybe.of(value),
-					Maybe.match(id, () => 'none'),
+					Maybe.match(idFn, () => 'none'),
 				),
 				value,
 			)
@@ -227,13 +227,13 @@ describe('Maybe type class', () => {
 		it('should validate non curried with nothing version', () => {
 			const result = pipe(Maybe.nothing(), mb => Maybe.toEither(mb, 'error'))
 			assert.ok(Either.isLeft(result))
-			assert.equal('error', Either.match(result, id, id))
+			assert.equal('error', Either.match(result, idFn, idFn))
 		})
 
 		it('should validate curried with just version when predicate its true', () => {
 			const result = pipe(Maybe.of('a'), mb => Maybe.toEither(mb, 'error'))
 			assert.ok(Either.isRight(result))
-			assert.equal('a', Either.match(result, id, id))
+			assert.equal('a', Either.match(result, idFn, idFn))
 		})
 	})
 })
