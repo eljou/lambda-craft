@@ -5,7 +5,7 @@ import { id, pipe } from '../utils.mjs'
 import { Maybe } from '../maybe.mjs'
 import { Either } from '../either.mjs'
 
-describe.skip('Either type class', () => {
+describe('Either type class', () => {
 	describe('creation functions of, left, right', () => {
 		it('should be able to create with "of"', () => {
 			const e = Either.of(1)

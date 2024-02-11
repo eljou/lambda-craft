@@ -7,13 +7,9 @@ module.exports = {
 	extends: 'eslint:recommended',
 	overrides: [
 		{
-			env: {
-				node: true,
-			},
-			files: ['.eslintrc.{js,cjs}'],
-			parserOptions: {
-				sourceType: 'script',
-			},
+			env: { node: true },
+			files: ['.eslintrc.{js,cjs,mjs}'],
+			parserOptions: { sourceType: 'script' },
 		},
 	],
 	parserOptions: {

@@ -28,15 +28,15 @@ function size(arr) {
 	return arr.length
 }
 
-function head([head, ...tail]) {
+function head([head, ..._tail]) {
 	return Maybe.fromNullable(head)
 }
 
-function headOrNull([head, ...tail]) {
+function headOrNull([head, ..._tail]) {
 	return head ?? null
 }
 
-function tail([h, ...tail]) {
+function tail([_h, ...tail]) {
 	return tail
 }
 
@@ -282,6 +282,7 @@ export const Arr = {
 	filter,
 	filterIndexed,
 	chain,
+	chainIndexed,
 	fold,
 	foldIndexed,
 	ap,

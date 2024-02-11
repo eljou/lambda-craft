@@ -6,7 +6,7 @@ import { Maybe } from '../maybe.mjs'
 import { Either } from '../either.mjs'
 import { Task } from '../task.mjs'
 
-describe.skip('Task type class', () => {
+describe('Task type class', () => {
 	describe('creation functions create, of, rejected, fromTry, fromLazyPromise, fromEither, fromMaybe', () => {
 		it('should be able to create with "create" and resolves', (_, done) =>
 			Task.create((_, res) => res('good')).fork(done, n => {

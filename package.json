@@ -1,12 +1,18 @@
 {
 	"name": "lambda-craft",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "",
 	"type": "module",
 	"main": "src/index.mjs",
 	"typings": "src/index.d.ts",
+	"files": [
+		"src/**/*.mjs",
+		"src/**/*.d.ts"
+	],
 	"scripts": {
-		"test": "node --test"
+		"lint": "eslint src/**/*.mjs --quiet --fix",
+		"test": "node --test",
+		"release": "np"
 	},
 	"keywords": [
 		"functional",
