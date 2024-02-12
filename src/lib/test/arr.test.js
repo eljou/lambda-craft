@@ -4,7 +4,6 @@ import assert from 'node:assert/strict'
 import { id, pipe } from '../utils.mjs'
 import { Arr } from '../arr.mjs'
 import { Maybe } from '../maybe.mjs'
-// import { Either } from '../either.js'
 
 describe('Array utilities', () => {
 	describe('creation functions of, make, makeWithIndex', () => {
