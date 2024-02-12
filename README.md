@@ -34,11 +34,22 @@ npm install lambda-craft --save
 | [Either]        | Either    | Functions for describing the `Either` of a certain operation without relying on exceptions.             |
 | [Task]          | Task      | Functions for describing the asynchoronous operations.                                                  |
 
+### Example
+
 ```typescript
+import { pipe, Maybe, Arr } from 'lambda-craft'
+
+const r = pipe(
+  Arr.of(1, 2, 3, 4, 5), // -> [1,2,3,4,5]
+  Arr.take(2),  // -> [1,2]
+  Arr.find(n => n == 1), // -> Maybe(1)
+  Maybe.map(n => n * 10), // -> Maybe(10)
+  Maybe.getOrDefault<number>(5), // -> 10
+)
+```
 
 ## License
 
 The MIT License.
 
 See [LICENSE](LICENSE)
-```
