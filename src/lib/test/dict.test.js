@@ -28,6 +28,13 @@ describe('Dict utilities', () => {
 		assert.equal(r[1], 'age')
 	})
 
+	it('should get an object values', () => {
+		const r = pipe({ name: 'jhon', age: 12 }, Dict.values)
+		assert.equal(r.length, 2)
+		assert.equal(r[0], 'jhon')
+		assert.equal(r[1], 12)
+	})
+
 	describe('prop', () => {
 		const obj = { name: 'dog', age: 22 }
 		it('should work with curried version', () => {

@@ -4,6 +4,8 @@ import assert from 'node:assert/strict'
 import { idFn, pipe } from '../utils.mjs'
 import { Arr } from '../arr.mjs'
 import { Maybe } from '../maybe.mjs'
+import { Either } from '../either.mjs'
+import { Task } from '../task.mjs'
 
 describe('Array utilities', () => {
 	describe('creation functions of, make, makeWithIndex', () => {
@@ -587,6 +589,120 @@ describe('Array utilities', () => {
 				xs => {
 					assert.equal(xs.length, 0)
 				},
+			)
+		})
+	})
+
+	describe('sequenceEither', () => {
+		it('should get the list when all members are right', () => {
+			pipe(Arr.of(1, 2, 3), Arr.map(Either.of), Arr.sequenceEither, Either.toNullable, xs => {
+				assert.equal(xs.length, 3)
+				assert.equal(xs[2], 3)
+			})
+		})
+		it('should get the none when some members are left', () => {
+			pipe(
+				Arr.of(1, 2, 3),
+				Arr.map(el => (el % 2 ? Either.of(el) : Either.left('bad'))),
+				Arr.sequenceEither,
+				Either.toNullable,
+				xs => assert.equal(xs, null),
+			)
+		})
+	})
+
+	describe('traverseEither', () => {
+		it('should get the list when all members are right, curried version', () => {
+			pipe(Arr.of(1, 2, 3), Arr.traverseEither(Either.of), Either.toNullable, xs => {
+				assert.equal(xs.length, 3)
+				assert.equal(xs[2], 3)
+			})
+		})
+		it('should get the none when some members are left, uncurried version', () => {
+			pipe(
+				Arr.of(1, 2, 3),
+				xs => Arr.traverseEither(xs, el => (el % 2 ? Either.of(el) : Either.left('bad'))),
+				Either.toNullable,
+				xs => assert.equal(xs, null),
+			)
+		})
+	})
+
+	describe('sequenceTask', () => {
+		it('should get the list when all members are resolved', () => {
+			pipe(Arr.of(1, 2, 3), Arr.map(Task.of), Arr.sequenceTask, t =>
+				t.fork(
+					err => assert.equal(err, 'should not happend'),
+					xs => {
+						assert.equal(xs.length, 3)
+						assert.equal(xs[2], 3)
+					},
+				),
+			)
+		})
+
+		it('should get the none when some members are rejected', () => {
+			pipe(
+				Arr.of(1, 2, 3),
+				Arr.map(el => (el % 2 ? Task.of(el) : Task.rejected('bad'))),
+				Arr.sequenceTask,
+				t =>
+					t.fork(
+						err => assert.equal(err, 'bad'),
+						xs => assert.equal(xs, 'should not happend'),
+					),
+			)
+		})
+	})
+
+	describe('traverseTaskM', () => {
+		it('should get the list when all members are resolved', () => {
+			pipe(Arr.of(1, 2, 3), Arr.traverseTaskM(Task.of), t =>
+				t.fork(
+					err => assert.equal(err, 'should not happend'),
+					xs => {
+						assert.equal(xs.length, 3)
+						assert.equal(xs[2], 3)
+					},
+				),
+			)
+		})
+
+		it('should get the none when some members are rejected', () => {
+			pipe(
+				Arr.of(1, 2, 3),
+				Arr.traverseTaskM(el => (el % 2 ? Task.of(el) : Task.rejected('bad'))),
+				t =>
+					t.fork(
+						err => assert.equal(err, 'bad'),
+						xs => assert.equal(xs, 'should not happend'),
+					),
+			)
+		})
+	})
+
+	describe('traverseTaskA', () => {
+		it('should get the list when all members are resolved', () => {
+			pipe(Arr.of(1, 2, 3), Arr.traverseTaskA(Task.of), t =>
+				t.fork(
+					err => assert.equal(err, 'should not happend'),
+					xs => {
+						assert.equal(xs.length, 3)
+						assert.equal(xs[2], 3)
+					},
+				),
+			)
+		})
+
+		it('should get the none when some members are rejected', () => {
+			pipe(
+				Arr.of(1, 2, 3),
+				Arr.traverseTaskA(el => (el % 2 ? Task.of(el) : Task.rejected('bad'))),
+				t =>
+					t.fork(
+						err => assert.equal(err, 'bad'),
+						xs => assert.equal(xs, 'should not happend'),
+					),
 			)
 		})
 	})
