@@ -630,8 +630,11 @@ describe('Array utilities', () => {
 
 	describe('sequenceTask', () => {
 		it('should get the list when all members are resolved', () => {
-			pipe(Arr.of(1, 2, 3), Arr.map(Task.of), Arr.sequenceTask, t =>
-				t.fork(
+			pipe(
+				Arr.of(1, 2, 3),
+				Arr.map(Task.of),
+				Arr.sequenceTask,
+				Task.fork(
 					err => assert.equal(err, 'should not happend'),
 					xs => {
 						assert.equal(xs.length, 3)
@@ -646,19 +649,20 @@ describe('Array utilities', () => {
 				Arr.of(1, 2, 3),
 				Arr.map(el => (el % 2 ? Task.of(el) : Task.rejected('bad'))),
 				Arr.sequenceTask,
-				t =>
-					t.fork(
-						err => assert.equal(err, 'bad'),
-						xs => assert.equal(xs, 'should not happend'),
-					),
+				Task.fork(
+					err => assert.equal(err, 'bad'),
+					xs => assert.equal(xs, 'should not happend'),
+				),
 			)
 		})
 	})
 
 	describe('traverseTaskM', () => {
 		it('should get the list when all members are resolved', () => {
-			pipe(Arr.of(1, 2, 3), Arr.traverseTaskM(Task.of), t =>
-				t.fork(
+			pipe(
+				Arr.of(1, 2, 3),
+				Arr.traverseTaskM(Task.of),
+				Task.fork(
 					err => assert.equal(err, 'should not happend'),
 					xs => {
 						assert.equal(xs.length, 3)
@@ -672,19 +676,20 @@ describe('Array utilities', () => {
 			pipe(
 				Arr.of(1, 2, 3),
 				Arr.traverseTaskM(el => (el % 2 ? Task.of(el) : Task.rejected('bad'))),
-				t =>
-					t.fork(
-						err => assert.equal(err, 'bad'),
-						xs => assert.equal(xs, 'should not happend'),
-					),
+				Task.fork(
+					err => assert.equal(err, 'bad'),
+					xs => assert.equal(xs, 'should not happend'),
+				),
 			)
 		})
 	})
 
 	describe('traverseTaskA', () => {
 		it('should get the list when all members are resolved', () => {
-			pipe(Arr.of(1, 2, 3), Arr.traverseTaskA(Task.of), t =>
-				t.fork(
+			pipe(
+				Arr.of(1, 2, 3),
+				Arr.traverseTaskA(Task.of),
+				Task.fork(
 					err => assert.equal(err, 'should not happend'),
 					xs => {
 						assert.equal(xs.length, 3)
@@ -698,11 +703,10 @@ describe('Array utilities', () => {
 			pipe(
 				Arr.of(1, 2, 3),
 				Arr.traverseTaskA(el => (el % 2 ? Task.of(el) : Task.rejected('bad'))),
-				t =>
-					t.fork(
-						err => assert.equal(err, 'bad'),
-						xs => assert.equal(xs, 'should not happend'),
-					),
+				Task.fork(
+					err => assert.equal(err, 'bad'),
+					xs => assert.equal(xs, 'should not happend'),
+				),
 			)
 		})
 	})

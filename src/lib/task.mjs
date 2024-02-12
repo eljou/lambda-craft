@@ -139,6 +139,22 @@ function fold() {
 	return _fold(arguments[0], arguments[1], arguments[2])
 }
 
+function _fork(t, errFn, succFn) {
+	t.fork(
+		e => errFn(e),
+		s => succFn(s),
+	)
+}
+function fork() {
+	if (arguments.length === 2) {
+		const args = arguments
+		return function fn(data) {
+			return _fork(data, args[0], args[1])
+		}
+	}
+	return _fork(arguments[0], arguments[1], arguments[2])
+}
+
 function toPromise(t) {
 	return new Promise((res, rej) => t.fork(rej, res))
 }
@@ -161,4 +177,5 @@ export const Task = {
 	toPromise,
 	flip,
 	fold,
+	fork,
 }

@@ -41,6 +41,9 @@ declare function ap<E, S>(t: Task<E, S>): <T>(tFn: Task<E, (s: S) => T>) => Task
 declare function fold<E, S, F, T>(t: Task<E, S>, fErr: (e: E) => F, fSucc: (s: S) => T): Task<never, T | F>
 declare function fold<E, S, F, T>(fErr: (e: E) => F, fSucc: (s: S) => T): (t: Task<E, S>) => Task<never, T | F>
 
+declare function fork<E, S>(t: Task<E, S>, fErr: (e: E) => void, fSucc: (s: S) => void): void
+declare function fork<E, S>(fErr: (e: E) => void, fSucc: (s: S) => void): (t: Task<E, S>) => void
+
 declare function toPromise<E, S>(t: Task<E, S>): Promise<S>
 
 // @ts-ignore
@@ -61,6 +64,7 @@ declare const Task = {
 	rejectTap,
 	ap,
 	fold,
+	fork,
 	toPromise,
 }
 
