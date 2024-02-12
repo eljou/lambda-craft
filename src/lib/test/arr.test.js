@@ -1,7 +1,7 @@
 import { it, describe } from 'node:test'
 import assert from 'node:assert/strict'
 
-import { id, pipe } from '../utils.mjs'
+import { idFn, pipe } from '../utils.mjs'
 import { Arr } from '../arr.mjs'
 import { Maybe } from '../maybe.mjs'
 
@@ -16,7 +16,7 @@ describe('Array utilities', () => {
 		})
 
 		it('should be able to create with "makeWithIndex"', () => {
-			assert.deepEqual(Arr.makeWithIndex(3, id), [0, 1, 2])
+			assert.deepEqual(Arr.makeWithIndex(3, idFn), [0, 1, 2])
 		})
 	})
 
@@ -303,6 +303,289 @@ describe('Array utilities', () => {
 				xs => {
 					assert.equal(xs['M'].length, 2)
 					assert.equal(xs['S'].length, 1)
+				},
+			)
+		})
+	})
+
+	describe('forEach', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			let n = ''
+			pipe(
+				arr,
+				Arr.forEach(el => {
+					n += el
+				}),
+			)
+
+			assert.equal('12345', n)
+		})
+		it('should be ok on uncurried version', () => {
+			let n = ''
+			pipe(arr, xs =>
+				Arr.forEach(xs, el => {
+					n += el
+				}),
+			)
+
+			assert.equal('12345', n)
+		})
+	})
+
+	describe('forEachIndexed', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			pipe(
+				arr,
+				Arr.forEachIndexed((el, index) => assert.equal(el, index + 1)),
+			)
+		})
+		it('should be ok on uncurried version', () => {
+			pipe(arr, xs => Arr.forEachIndexed(xs, (el, index) => assert.equal(el, index + 1)))
+		})
+	})
+
+	describe('map', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			const res = pipe(
+				arr,
+				Arr.map(el => el.toString()),
+			)
+			assert.equal(res[0], '1')
+			assert.equal(res[4], '5')
+		})
+		it('should be ok on uncurried version', () => {
+			const res = pipe(arr, xs => Arr.map(xs, el => el.toString()))
+			assert.equal(res[0], '1')
+			assert.equal(res[4], '5')
+		})
+	})
+
+	describe('mapIndexed', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			const res = pipe(
+				arr,
+				Arr.mapIndexed((el, idx) => el + idx),
+			)
+			assert.equal(res[0], 1)
+			assert.equal(res[4], 9)
+		})
+		it('should be ok on uncurried version', () => {
+			const res = pipe(arr, xs => Arr.mapIndexed(xs, (el, idx) => el + idx))
+			assert.equal(res[0], 1)
+			assert.equal(res[4], 9)
+		})
+	})
+
+	describe('filter', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			pipe(
+				arr,
+				Arr.filter(el => el == 3),
+				xs => {
+					assert.equal(xs.length, 1)
+					assert.equal(xs[0], 3)
+				},
+			)
+		})
+		it('should be ok on uncurried version', () => {
+			pipe(
+				arr,
+				xs => Arr.filter(xs, el => el == 3),
+				xs => {
+					assert.equal(xs.length, 1)
+					assert.equal(xs[0], 3)
+				},
+			)
+		})
+	})
+
+	describe('filterIndexed', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			pipe(
+				arr,
+				Arr.filterIndexed((_, id) => id == 3),
+				xs => {
+					assert.equal(xs.length, 1)
+					assert.equal(xs[0], 4)
+				},
+			)
+		})
+		it('should be ok on uncurried version', () => {
+			pipe(
+				arr,
+				xs => Arr.filterIndexed(xs, (_, id) => id == 3),
+				xs => {
+					assert.equal(xs.length, 1)
+					assert.equal(xs[0], 4)
+				},
+			)
+		})
+	})
+
+	describe('chain', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			pipe(
+				arr,
+				Arr.chain(el => [el * 2]),
+				xs => {
+					assert.equal(xs.length, 5)
+					assert.equal(xs[0], 2)
+					assert.equal(xs[xs.length - 1], 10)
+				},
+			)
+		})
+		it('should be ok on uncurried version', () => {
+			pipe(
+				arr,
+				xs => Arr.chain(xs, el => [el * 2]),
+				xs => {
+					assert.equal(xs.length, 5)
+					assert.equal(xs[0], 2)
+					assert.equal(xs[xs.length - 1], 10)
+				},
+			)
+		})
+	})
+
+	describe('chainIndexed', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			pipe(
+				arr,
+				Arr.chainIndexed((el, id) => [el * id]),
+				xs => {
+					assert.equal(xs.length, 5)
+					assert.equal(xs[0], 0)
+					assert.equal(xs[xs.length - 1], 20)
+				},
+			)
+		})
+		it('should be ok on uncurried version', () => {
+			pipe(
+				arr,
+				xs => Arr.chainIndexed(xs, (el, id) => [el * id]),
+				xs => {
+					assert.equal(xs.length, 5)
+					assert.equal(xs[0], 0)
+					assert.equal(xs[xs.length - 1], 20)
+				},
+			)
+		})
+	})
+
+	describe('fold', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			pipe(
+				arr,
+				Arr.fold((acc, el) => acc + el, 0),
+				xs => assert.equal(xs, 15),
+			)
+		})
+		it('should be ok on uncurried version', () => {
+			pipe(
+				arr,
+				xs => Arr.fold(xs, (acc, el) => acc + el, 0),
+				xs => assert.equal(xs, 15),
+			)
+		})
+	})
+
+	describe('foldIndexed', () => {
+		const arr = Arr.of(1, 2, 3, 4, 5)
+
+		it('should be ok on curried version', () => {
+			pipe(
+				arr,
+				Arr.foldIndexed((acc, el, id) => acc + el + id, 0),
+				xs => assert.equal(xs, 25),
+			)
+		})
+		it('should be ok on uncurried version', () => {
+			pipe(
+				arr,
+				xs => Arr.foldIndexed(xs, (acc, el, id) => acc + el + id, 0),
+				xs => assert.equal(xs, 25),
+			)
+		})
+	})
+
+	describe('ap', () => {
+		const arr = Arr.of(c => s => c + '-' + s)
+
+		it('should be ok on curried version', () => {
+			pipe(arr, Arr.ap(Arr.of('small', 'big')), Arr.ap(Arr.of('red', 'blue')), xs => {
+				assert.equal(xs[0], 'small-red')
+				assert.equal(xs[1], 'small-blue')
+				assert.equal(xs[2], 'big-red')
+				assert.equal(xs[3], 'big-blue')
+			})
+		})
+		it('should be ok on uncurried version', () => {
+			pipe(
+				arr,
+				xs => Arr.ap(xs, Arr.of('small', 'big')),
+				xs => Arr.ap(xs, Arr.of('red', 'blue')),
+				xs => {
+					assert.equal(xs[0], 'small-red')
+					assert.equal(xs[1], 'small-blue')
+					assert.equal(xs[2], 'big-red')
+					assert.equal(xs[3], 'big-blue')
+				},
+			)
+		})
+	})
+
+	describe('sequenceMaybe', () => {
+		it('should get the list when all members are just', () => {
+			pipe(Arr.of(1, 2, 3), Arr.map(Maybe.of), Arr.sequenceMaybe, Maybe.getOrDefault([]), xs => {
+				assert.equal(xs.length, 3)
+				assert.equal(xs[2], 3)
+			})
+		})
+		it('should get the none when some members are none', () => {
+			pipe(
+				Arr.of(1, 2, 3),
+				Arr.map(el => (el % 2 ? Maybe.of(el) : Maybe.nothing())),
+				Arr.sequenceMaybe,
+				Maybe.getOrDefault([]),
+				xs => {
+					assert.equal(xs.length, 0)
+				},
+			)
+		})
+	})
+
+	describe('traverseMaybe', () => {
+		it('should get the list when all members are just, curried version', () => {
+			pipe(Arr.of(1, 2, 3), Arr.traverseMaybe(Maybe.of), Maybe.getOrDefault([]), xs => {
+				assert.equal(xs.length, 3)
+				assert.equal(xs[2], 3)
+			})
+		})
+		it('should get the none when some members are none, uncurried version', () => {
+			pipe(
+				Arr.of(1, 2, 3),
+				xs => Arr.traverseMaybe(xs, el => (el % 2 ? Maybe.of(el) : Maybe.nothing())),
+				Maybe.getOrDefault([]),
+				xs => {
+					assert.equal(xs.length, 0)
 				},
 			)
 		})
