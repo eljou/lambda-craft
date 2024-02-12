@@ -1,7 +1,7 @@
 {
 	"name": "lambda-craft",
 	"version": "0.0.1",
-	"description": "",
+	"description": "Modern, and practical utility library for FP in TypeScript",
 	"type": "module",
 	"main": "src/index.mjs",
 	"typings": "src/index.d.ts",
@@ -9,15 +9,25 @@
 		"src/**/*.mjs",
 		"src/**/*.d.ts"
 	],
+	"bugs": {
+		"url": "https://github.com/eljou/lambda-craft/issues"
+	},
+	"homepage": "https://github.com/eljou/lambda-craft#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/eljou/lambda-craft.git"
+	},
 	"scripts": {
 		"lint": "eslint src/**/*.mjs --quiet --fix",
 		"test": "node --test",
+		"test:report": "node --test --experimental-test-coverage",
 		"release": "np"
 	},
 	"keywords": [
 		"functional",
 		"fp",
 		"monad",
+		"typeclass",
 		"either",
 		"task",
 		"maybe",
@@ -32,6 +42,7 @@
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.1.3",
+		"lcov": "^1.16.0",
 		"np": "^9.2.0",
 		"prettier": "^3.2.5",
 		"rimraf": "^5.0.5"
