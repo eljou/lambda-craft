@@ -71,8 +71,7 @@ declare function fromTry<E, S>(fn: () => S): Either<E, ExtractValue<S>>
 declare function map<E, S, T>(e: Either<E, S>, mapFn: (value: S) => NonNullable<T>): Either<E, T>
 
 /**
- * Returns a function that maps the value of the provided Either instance using the specified mapping function.
- * Functor implementation for Either, this is the curried version of map.
+ * Maps the value of the provided Either instance using the specified mapping function (curried version).
  * @template S, T
  * @param {(value: S) => NonNullable<T>} mapFn - The mapping function to transform the value.
  * @returns {<E>(e: Either<E, S>) => Either<E, T>} - The function that maps the value of the Either instance.
@@ -89,8 +88,7 @@ declare function map<S, T>(mapFn: (value: S) => NonNullable<T>): <E>(e: Either<E
 declare function leftMap<E, S, F>(e: Either<E, S>, mapFn: (value: E) => NonNullable<F>): Either<F, S>
 
 /**
- * Returns a function that maps the error value of the provided Either instance using the specified mapping function.
- * This is the curried version of leftMap
+ * Maps the error value of the provided Either instance using the specified mapping function (curried version).
  * @template E, F
  * @param {(value: E) => NonNullable<F>} mapFn - The mapping function to transform the error value.
  * @returns {<S>(e: Either<E, S>) => Either<F, S>} - The function that maps the error value of the Either instance.
@@ -108,8 +106,8 @@ declare function leftMap<E, F>(mapFn: (value: E) => NonNullable<F>): <S>(e: Eith
 declare function ap<E, S, T>(eFn: Either<E, (s: S) => T>, e: Either<E, S>): Either<E, T>
 
 /**
- * Returns a function that applies the function contained in the provided Either instance to the value of another Either instance.
- * Applicative implementation for Either, this is the curried version of ap
+ * Applies the function contained in the provided Either instance to the value of another Either instance (curried version).
+ * Applicative implementation for Either.
  * @template E, S
  * @param {Either<E, S>} e - The Either instance whose value will be used as the argument for the function.
  * @returns {<T>(eFn: Either<E, (s: S) => T>) => Either<E, T>} - The function that applies the function to the value.
@@ -127,8 +125,8 @@ declare function ap<E, S>(e: Either<E, S>): <T>(eFn: Either<E, (s: S) => T>) => 
 declare function chain<E, S, F, T>(e: Either<E, S>, mapFn: (value: S) => Either<F, T>): Either<E | F, T>
 
 /**
- * Returns a function that chains the provided mapping function to the value of the provided Either instance.
- * Monad implementation for Either, this is the curried version of chain
+ * Chains the provided mapping function to the value of the provided Either instance (curried version).
+ * Monad implementation for Either.
  * @template S, F, T
  * @param {(value: S) => Either<F, T>} mapFn - The mapping function to produce the new Either instance.
  * @returns {<E>(e: Either<E, S>) => Either<E | F, T>} - The function that chains the mapping function to the value.
@@ -145,8 +143,7 @@ declare function chain<S, F, T>(mapFn: (value: S) => Either<F, T>): <E>(e: Eithe
 declare function orElse<E, S, F, T>(e: Either<E, S>, mapFn: (value: E) => Either<F, T>): Either<F, S | T>
 
 /**
- * Returns a function that returns a new Either instance by applying the provided mapping function to the value of the provided Either instance if it is a Left, otherwise returns the original Right instance.
- * This is the curried version of orElse
+ * Returns a new Either instance by applying the provided mapping function to the value of the provided Either instance if it is a Left, otherwise returns the original Right instance (curried version).
  * @template E, F, T
  * @param {(value: E) => Either<F, T>} mapFn - The mapping function to produce the new Either instance.
  * @returns {<S>(e: Either<E, S>) => Either<F, S | T>} - The function that returns the new Either instance after applying the mapping function.
@@ -164,8 +161,7 @@ declare function orElse<E, F, T>(mapFn: (value: E) => Either<F, T>): <S>(e: Eith
 declare function match<E, S, T>(e: Either<E, S>, leftFn: (value: E) => T, rightFn: (value: S) => T): T
 
 /**
- * Returns a function that executes the appropriate function based on whether the provided Either instance is a Left or a Right, and returns the result.
- * This is the curried version of match
+ * Executes the appropriate function based on whether the provided Either instance is a Left or a Right, and returns the result (curried version).
  * @template E, S, T
  * @param {(value: E) => T} leftFn - The function to execute if the Either instance is a Left.
  * @param {(value: S) => T} rightFn - The function to execute if the Either instance is a Right.
@@ -183,8 +179,7 @@ declare function match<E, S, T>(leftFn: (value: E) => T, rightFn: (value: S) => 
 declare function tap<E, S>(e: Either<E, S>, rightFn: (value: S) => void): Either<E, S>
 
 /**
- * Returns a new function that, when called with an Either instance, executes the provided function with the value of the Right instance, if it exists and ignores the returned value.
- * This is the curried version of tap
+ * Executes the provided function with the value of the Right instance, if it exists and ignores the returned value (curried version).
  * @template E, S
  * @param {(value: S) => void} rightFn - The function to execute with the value of the Right instance.
  * @returns {(e: Either<E, S>) => Either<E, S>} - The new function that performs the tap operation.
@@ -201,8 +196,7 @@ declare function tap<E, S>(rightFn: (value: S) => void): (e: Either<E, S>) => Ei
 declare function leftTap<E, S>(e: Either<E, S>, leftFn: (err: E) => void): Either<E, S>
 
 /**
- * Returns a new function that, when called with an Either instance, executes the provided function with the error value of the Left instance, if it exists and ignores the returned value.
- * This is the curried version of leftTap
+ * Executes the provided function with the error value of the Left instance, if it exists and ignores the returned value (curried version).
  * @template E, S
  * @param {(err: E) => void} leftFn - The function to execute with the error value of the Left instance.
  * @returns {(e: Either<E, S>) => Either<E, S>} - The new function that performs the leftTap operation.
