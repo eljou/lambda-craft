@@ -1,5 +1,8 @@
 export declare type ExtractValue<T> = Exclude<T, null | undefined>
 
+/**
+ * Performs left-to-right function composition and returns a computed value, the first argument must be the initial value.
+ */
 export declare function pipe<A, B>(value: A, fn1: (arg: A) => B): B
 export declare function pipe<A, B, C>(value: A, fn1: (arg: A) => B, fn2: (arg: B) => C): C
 export declare function pipe<A, B, C, D>(value: A, fn1: (arg: A) => B, fn2: (arg: B) => C, fn3: (arg: C) => D): D
@@ -25,4 +28,10 @@ export declare function flow<A extends ReadonlyArray<unknown>, B, C, D, E, F, G,
 export declare function flow<A extends ReadonlyArray<unknown>, B, C, D, E, F, G, H, I, J>(fn1: (...args: A) => B, fn2: (arg: B) => C, fn3: (arg: C) => D, fn4: (arg: D) => E, fn5: (arg: E) => F, fn6: (arg: F) => G, fn7: (arg: G) => H, fn8: (arg: H) => I, fn9: (arg: I) => J): (...args: A) => J;
 export declare function flow<A extends ReadonlyArray<unknown>, B, C, D, E, F, G, H, I, J, K>(fn1: (...args: A) => B, fn2: (arg: B) => C, fn3: (arg: C) => D, fn4: (arg: D) => E, fn5: (arg: E) => F, fn6: (arg: F) => G, fn7: (arg: G) => H, fn8: (arg: H) => I, fn9: (arg: I) => J,fn10: (arg: J) => K): (...args: A) => K;
 
+/**
+ * A function that returns the input value as is.
+ * @template T
+ * @param {T} t - The input value.
+ * @returns {T} - The input value.
+ */
 export declare function idFn<T>(t: T): T

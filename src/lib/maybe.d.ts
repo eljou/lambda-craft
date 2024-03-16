@@ -87,7 +87,7 @@ declare function toNullable<A>(mb: Maybe<A>): A | null
 declare function getOrDefault<A>(mb: Maybe<A>, defaultValue: NonNullable<A>): A
 
 /**
- * Gets the value from the Maybe container or returns a default value if there is no value.
+ * Gets the value from the Maybe container or returns a default value if there is no value (curried version).
  * @template A
  * @param {NonNullable<A>} defaultValue - The default value to return if there is no value in the Maybe container.
  * @returns {(mb: Maybe<A>) => A} - A function that takes a Maybe container and returns the value or the default value.
@@ -105,7 +105,7 @@ declare function getOrDefault<A>(defaultValue: NonNullable<A>): (mb: Maybe<A>) =
 declare function match<A, B>(mb: Maybe<A>, justFn: (value: A) => B, noneFn: () => B): B
 
 /**
- * Matches the Maybe container and returns a function that takes a Maybe container and executes the appropriate function based on whether it has a value or not.
+ * Matches the Maybe container and executes the appropriate function based on whether it has a value or not (curried version).
  * @template A, B
  * @param {(value: A) => B} justFn - The function to execute if the Maybe container has a value.
  * @param {() => B} noneFn - The function to execute if the Maybe container has no value.
@@ -123,7 +123,7 @@ declare function match<A, B>(justFn: (value: A) => B, noneFn: () => B): (mb: May
 declare function tap<A>(mb: Maybe<A>, someFn: (value: A) => void): Maybe<A>
 
 /**
- * Returns a function that takes a Maybe container, executes a function with the value from the Maybe container, and returns the Maybe container.
+ * Executes a function with the value from the Maybe container and returns the Maybe container (curried version).
  * @template A
  * @param {(value: A) => void} someFn - The function to execute with the value from the Maybe container.
  * @returns {(mb: Maybe<A>) => Maybe<A>} - A function that takes a Maybe container and returns the Maybe container.
@@ -132,6 +132,7 @@ declare function tap<A>(someFn: (value: A) => void): (mb: Maybe<A>) => Maybe<A>
 
 /**
  * Maps the value of type A in the Maybe container to a value of type B using the provided map function, implementing the Functor type class.
+ * Functor implementation for Maybe
  * @template A, B
  * @param {Maybe<A>} maybe - The Maybe container.
  * @param {(value: A) => B} mapFn - The map function.
@@ -140,7 +141,7 @@ declare function tap<A>(someFn: (value: A) => void): (mb: Maybe<A>) => Maybe<A>
 declare function map<A, B>(maybe: Maybe<A>, mapFn: (value: A) => B): Maybe<B>
 
 /**
- * Returns a function that maps the value of type A in the Maybe container to a value of type B using the provided map function, implementing the Functor type class.
+ * Maps the value of type A in the Maybe container to a value of type B using the provided map function, implementing the Functor type class (curried version).
  * @template A, B
  * @param {(value: A) => B} mapFn - The map function.
  * @returns {(maybe: Maybe<A>) => Maybe<B>} - The function that maps the value in the Maybe container.
@@ -149,6 +150,7 @@ declare function map<A, B>(mapFn: (value: A) => B): (maybe: Maybe<A>) => Maybe<B
 
 /**
  * Chains the Maybe container with a mapping function that returns another Maybe container, implementing the Monad type class.
+ * Monad implementation for Maybe
  * @template A, B
  * @param {Maybe<A>} mb - The Maybe container.
  * @param {(value: A) => Maybe<B>} mapFn - The mapping function that returns another Maybe container.
@@ -157,7 +159,7 @@ declare function map<A, B>(mapFn: (value: A) => B): (maybe: Maybe<A>) => Maybe<B
 declare function chain<A, B>(mb: Maybe<A>, mapFn: (value: A) => Maybe<B>): Maybe<B>
 
 /**
- * Returns a function that takes a Maybe container and chains it with a mapping function that returns another Maybe container, implementing the Monad type class.
+ * Chains the Maybe container with a mapping function that returns another Maybe container, implementing the Monad type class (curried version).
  * @template A, B
  * @param {(value: A) => Maybe<B>} mapFn - The mapping function that returns another Maybe container.
  * @returns {(mb: Maybe<A>) => Maybe<B>} - A function that takes a Maybe container and returns the result of chaining it with the mapping function.
@@ -166,6 +168,7 @@ declare function chain<A, B>(mapFn: (value: A) => Maybe<B>): (mb: Maybe<A>) => M
 
 /**
  * Applies a Maybe container that contains a function to a Maybe container that contains a value, resulting in a new Maybe container, implementing the Applicative type class.
+ * Applicative implementation for Maybe
  * @template A, B
  * @param {Maybe<(a: A) => B>} mbFn - The Maybe container that contains a function.
  * @param {Maybe<A>} mb - The Maybe container that contains a value.
@@ -174,7 +177,7 @@ declare function chain<A, B>(mapFn: (value: A) => Maybe<B>): (mb: Maybe<A>) => M
 declare function ap<A, B>(mbFn: Maybe<(a: A) => B>, mb: Maybe<A>): Maybe<B>
 
 /**
- * Returns a function that takes a Maybe container that contains a value and applies it to a Maybe container that contains a function, resulting in a new Maybe container, implementing the Applicative type class.
+ * Applies a Maybe container that contains a function to a Maybe container that contains a value, resulting in a new Maybe container, implementing the Applicative type class (curried version).
  * @template A
  * @param {Maybe<A>} mb - The Maybe container that contains a value.
  * @returns {<B>(mbFn: Maybe<(a: A) => B>) => Maybe<B>} - A function that takes a Maybe container that contains a function and returns the result of applying it to the value.
@@ -191,7 +194,7 @@ declare function ap<A>(mb: Maybe<A>): <B>(mbFn: Maybe<(a: A) => B>) => Maybe<B>
 declare function filter<A>(mb: Maybe<A>, predicateFn: (value: A) => boolean): Maybe<A>
 
 /**
- * Returns a function that takes a Maybe container and filters it based on a predicate function.
+ * Filters the Maybe container based on a predicate function (curried version).
  * @template A
  * @param {(value: A) => boolean} predicateFn - The predicate function to filter the Maybe container.
  * @returns {(mb: Maybe<A>) => Maybe<A>} - A function that takes a Maybe container and returns the filtered Maybe container.
