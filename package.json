@@ -1,6 +1,6 @@
 {
 	"name": "lambda-craft",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Modern, and practical utility library for FP in TypeScript",
 	"type": "module",
 	"main": "src/index.mjs",
