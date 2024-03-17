@@ -19,6 +19,7 @@
 	},
 	"scripts": {
 		"lint": "eslint src/**/*.mjs --quiet --fix",
+		"run:playground": "npx tsx src/playground",
 		"test": "node --test",
 		"test:report": "node --test --experimental-test-coverage",
 		"release": "np"
@@ -45,6 +46,8 @@
 		"lcov": "^1.16.0",
 		"np": "^9.2.0",
 		"prettier": "^3.2.5",
-		"rimraf": "^5.0.5"
+		"rimraf": "^5.0.5",
+		"tsx": "^4.7.1",
+		"typescript": "^5.4.2"
 	}
 }
