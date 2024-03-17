@@ -134,6 +134,7 @@ declare function chain<S, F, T>(mapFn: (value: S) => Task<F, T>): <E>(t: Task<E,
 
 /**
  * Provides an alternative Task if the original Task fails, based on the specified mapping function.
+ * Monad implementation for Task
  * @template E, S, F, T
  * @param {Task<E, S>} t - The original Task.
  * @param {(value: E) => Task<F, T>} mapFn - The mapping function for the alternative Task.
@@ -196,6 +197,7 @@ declare function ap<E, S, F, T>(tFn: Task<E, (s: S) => T>, t: Task<E, S>): Task<
 /**
  * Applies a function wrapped in a Task to the result of another Task.
  * Returns a new Task that resolves with the result of applying the function to the result of the other Task (curried version).
+ * Applicative implementation for Task
  * @param {Task<E, S>} t - The Task whose result will be passed as an argument to the function.
  * @returns {<T>(tFn: Task<E, (s: S) => T>) => Task<E, T>} - A new function that takes a Task and returns a new Task that resolves with the result of applying the function to the result of the other Task.
  */

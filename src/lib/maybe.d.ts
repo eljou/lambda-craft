@@ -142,6 +142,7 @@ declare function map<A, B>(maybe: Maybe<A>, mapFn: (value: A) => B): Maybe<B>
 
 /**
  * Maps the value of type A in the Maybe container to a value of type B using the provided map function, implementing the Functor type class (curried version).
+ * Functor implementation for Maybe
  * @template A, B
  * @param {(value: A) => B} mapFn - The map function.
  * @returns {(maybe: Maybe<A>) => Maybe<B>} - The function that maps the value in the Maybe container.
@@ -160,6 +161,7 @@ declare function chain<A, B>(mb: Maybe<A>, mapFn: (value: A) => Maybe<B>): Maybe
 
 /**
  * Chains the Maybe container with a mapping function that returns another Maybe container, implementing the Monad type class (curried version).
+ * Monad implementation for Maybe
  * @template A, B
  * @param {(value: A) => Maybe<B>} mapFn - The mapping function that returns another Maybe container.
  * @returns {(mb: Maybe<A>) => Maybe<B>} - A function that takes a Maybe container and returns the result of chaining it with the mapping function.
@@ -178,6 +180,7 @@ declare function ap<A, B>(mbFn: Maybe<(a: A) => B>, mb: Maybe<A>): Maybe<B>
 
 /**
  * Applies a Maybe container that contains a function to a Maybe container that contains a value, resulting in a new Maybe container, implementing the Applicative type class (curried version).
+ * Applicative implementation for Maybe
  * @template A
  * @param {Maybe<A>} mb - The Maybe container that contains a value.
  * @returns {<B>(mbFn: Maybe<(a: A) => B>) => Maybe<B>} - A function that takes a Maybe container that contains a function and returns the result of applying it to the value.

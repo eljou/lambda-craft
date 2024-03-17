@@ -72,6 +72,7 @@ declare function map<E, S, T>(e: Either<E, S>, mapFn: (value: S) => NonNullable<
 
 /**
  * Maps the value of the provided Either instance using the specified mapping function (curried version).
+ * Functor implementation for Either
  * @template S, T
  * @param {(value: S) => NonNullable<T>} mapFn - The mapping function to transform the value.
  * @returns {<E>(e: Either<E, S>) => Either<E, T>} - The function that maps the value of the Either instance.
